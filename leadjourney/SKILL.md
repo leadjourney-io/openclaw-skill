@@ -1,7 +1,7 @@
 ---
 name: leadjourney
-description: Connect OpenClaw to LeadJourney marketing attribution. Answer which ads, campaigns and channels bring leads and revenue, read a lead's full journey, run custom reports, read live ad platform data, and set up LeadJourney tracking on a website.
-version: 1.0.0
+description: Connect OpenClaw to LeadJourney marketing attribution. Answer which ads, campaigns and channels bring leads and revenue, read a lead's full journey, run LeadJourney reports, read live ad platform data, request ad account changes that a person must confirm inside LeadJourney, and set up LeadJourney tracking on a website.
+version: 1.0.1
 homepage: https://leadjourney.io
 metadata:
   openclaw:
@@ -16,7 +16,7 @@ LeadJourney is marketing attribution: it follows a click from the ad or post tha
 
 - The user asks which channels, campaigns, ads or creatives bring leads, conversions or revenue
 - The user asks about a specific lead, or pastes a LeadJourney lead link
-- The user wants a custom report, a dashboard, or numbers from Google Ads, Meta or another connected ad platform
+- The user wants a LeadJourney report or dashboard, or numbers from an ad platform connected to LeadJourney
 - The user wants to add LeadJourney tracking to a website, or asks why leads are not arriving
 
 ## Connect (once)
@@ -36,7 +36,7 @@ LeadJourney is a remote MCP server at `https://api.leadjourney.io/mcp`. Sign-in 
    openclaw mcp login leadjourney
    ```
 
-   This prints a LeadJourney sign-in link. Give it to the user and ask them to open it, sign in, and approve the connection. Never ask the user for their LeadJourney password.
+   This prints a LeadJourney sign-in link. Give it to the user and ask them to open it, sign in, and approve the connection themselves. The user signs in only in their own browser; their LeadJourney password is not needed here.
 4. Confirm with `openclaw mcp status`.
 
 If sign-in fails with a redirect error, the gateway is probably behind its own public domain. Ask the user to run `openclaw mcp login leadjourney` from the OpenClaw CLI on their own machine instead.
@@ -69,12 +69,15 @@ Ad changes (pausing, budgets, bids, keywords) are only ever requested. Nothing c
 
 ### Tracking setup on a website
 
+The LeadJourney tracking script records visits, clicks and form submissions on the site and sends them to LeadJourney. Explain that to the user before installing it.
+
 1. Read the workspace's onboarding status. An unverified tracking domain is the usual reason nothing arrives, and no code change fixes it: tell the user to finish the DNS record in LeadJourney first.
 2. Detect the website's stack and form builder from its URL.
 3. Ask the user to copy their tracking script from LeadJourney under Settings, Tracking. Never invent the snippet; it is specific to the workspace.
-4. If the website's code is available, add the script once, site-wide, in the page head (for Next.js the root layout, for Nuxt the app head config, otherwise the shared layout or index.html). With Google Tag Manager, add it as a Custom HTML tag on all pages instead.
-5. Do not strip `gclid`, `fbclid` or `utm_*` parameters in redirects, because attribution depends on them.
-6. After the user deploys, verify the script on the live URL. A negative result on a client-rendered site can be a false negative; say so rather than declaring it missing.
+4. Check how the site handles cookie consent (a consent banner or consent management platform, or Google Consent Mode). If one is in place, load the script the way that setup requires, for example behind the right consent category, and ask the user which category applies when it is unclear.
+5. If the website's code is available, add the script once, site-wide, in the page head (for Next.js the root layout, for Nuxt the app head config, otherwise the shared layout or index.html). With Google Tag Manager, add it as a Custom HTML tag on all pages instead.
+6. Do not strip `gclid`, `fbclid` or `utm_*` parameters in redirects, because attribution depends on them.
+7. After the user deploys, verify the script on the live URL. A negative result on a client-rendered site can be a false negative; say so rather than declaring it missing.
 
 ## Privacy
 
