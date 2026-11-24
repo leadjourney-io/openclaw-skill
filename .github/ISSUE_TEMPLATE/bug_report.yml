@@ -1,0 +1,36 @@
+name: Bug report
+description: Something in the LeadJourney skill for OpenClaw does not work.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: input
+    id: cursor-version
+    attributes:
+      label: OpenClaw version
+      placeholder: "e.g. 2026.11.8"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Installing the skill
+        - Signing in to LeadJourney
+        - A LeadJourney tool returned an error or wrong data
+        - Tracking setup
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error message or logs
+      description: Remove any tokens, emails or customer data before pasting.
+      render: text
